@@ -1,12 +1,18 @@
 package edu.virginia.rich.cs4720;
 
 import android.app.Activity;
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Looper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.*;
@@ -23,25 +29,17 @@ import org.json.JSONObject;
 import java.io.InputStream;
 
 
-public class GamePanel extends Activity {
+public class GamePanel extends Activity implements SensorEventListener {
+    private SensorManager mSensorManager;
+    private Sensor light;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_panel);
-        
-        //set an onClick for the red button to call onRedButtonClicked()
-//        findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                onRedButtonClicked();
-//            }
-//        });
-    }
-    
-    @Override
-    protected void onResume() {
-    	super.onResume();
+
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        light = mSensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
     }
 
     @Override
@@ -148,5 +146,40 @@ public class GamePanel extends Activity {
         }
 
         return lightsJSON;
+    }
+
+    @Override
+    public final void onAccuracyChanged(Sensor sensor, int accuracy) {
+        // Do something here if sensor accuracy changes.
+    }
+
+    @Override
+    public final void onSensorChanged(SensorEvent event) {
+        float lux = event.values[0];
+        // Do something with this sensor data.
+
+        //daytime
+        if(lux > .5) {
+            ((TextView)findViewById(R.id.textView)).setText("day!");
+        }
+
+        //nighttime
+        if(lux < .5) {
+            ((TextView)findViewById(R.id.textView)).setText("night!");
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        // Register a listener for the sensor.
+        super.onResume();
+        mSensorManager.registerListener(this, light, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    @Override
+    protected void onPause() {
+        // Be sure to unregister the sensor when the activity pauses.
+        super.onPause();
+        mSensorManager.unregisterListener(this);
     }
 }
