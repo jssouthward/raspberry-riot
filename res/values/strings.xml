@@ -9,6 +9,8 @@
     <string name="p1b1">+1</string>
     <string name="p2b1">+2</string>
     <string name="p1b2">+1</string>
-    <string name="p2b2">+2</string>    
+    <string name="p2b2">+2</string>
+    <string name="title_activity_play">PlayActivity</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>
