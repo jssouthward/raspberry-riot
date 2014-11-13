@@ -11,8 +11,6 @@ import android.os.Looper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -67,6 +65,7 @@ public class GamePanel extends Activity implements SensorEventListener {
     }
 
     public void onStartButtonClicked(View view) {
+    	mSensorManager.unregisterListener(this);
     	this.setContentView(R.layout.playing_game_view);
 //        sendJson("http://" + ((EditText)findViewById(R.id.editText)).getText().toString() + "/rpi", createRedLightJSON());
     }
