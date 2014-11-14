@@ -9,6 +9,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Looper;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,6 +37,7 @@ public class GamePanel extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_panel);
+        
     }
 
     @Override
@@ -64,59 +66,6 @@ public class GamePanel extends Activity {
     	Intent intent = new Intent(this, PlayActivity.class);
     	intent.putExtra("IP", ((EditText)findViewById(R.id.editText)).getText().toString());
     	this.startActivity(intent);
-    }
-
-    public void onGreenButtonClicked(View view) {
-        sendJson("http://" + ((EditText)findViewById(R.id.editText)).getText().toString() + "/rpi", createGreenLightJSON());
-    }
-
-    public void onBlueButtonClicked(View view) {
-        sendJson("http://" + ((EditText)findViewById(R.id.editText)).getText().toString() + "/rpi", createBlueLightJSON());
-    }
-
-
-    protected void sendJson(final String url, final JSONObject lightCommand) {
-        Thread t = new Thread() {
-
-            public void run() {
-                Looper.prepare(); //For Preparing Message Pool for the child Thread
-                HttpClient client = new DefaultHttpClient();
-                HttpConnectionParams.setConnectionTimeout(client.getParams(), 10000); //Timeout Limit
-                HttpResponse response;
-
-                try {
-                    HttpPost post = new HttpPost(url);
-                    StringEntity se = new StringEntity( lightCommand.toString());
-                    se.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-                    post.setEntity(se);
-                    response = client.execute(post);
-
-                    /*Checking response */
-                    if(response!=null){
-                        InputStream in = response.getEntity().getContent(); //Get the data in the entity
-                    }
-
-                } catch(Exception e) {
-                    e.printStackTrace();
-                }
-
-                Looper.loop(); //Loop in the message queue
-            }
-        };
-
-        t.start();
-    }
-
-    public JSONObject createRedLightJSON() {
-        return createLightJSON(1, 255, 0, 0, 0.5, true);
-    }
-
-    public JSONObject createGreenLightJSON() {
-        return createLightJSON(1, 0, 0, 255, 0.5, true);
-    }
-
-    public JSONObject createBlueLightJSON() {
-        return createLightJSON(1, 0, 255, 0, 0.5, true);
     }
 
     public JSONObject createLightJSON(int lightId, int red, int blue, int green, double intensity, boolean propagate) {

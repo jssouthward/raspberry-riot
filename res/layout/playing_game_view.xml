@@ -27,13 +27,13 @@
         	android:paddingTop="200dp" >
 	
         	<ProgressBar
-	            android:id="@+id/progressBar1"
-            	style="?android:attr/progressBarStyleHorizontal"
-            	android:layout_width="0dp"
-            	android:layout_height="50dp"
-            	android:layout_weight="1"
-            	android:background="#F0F0F0"
-            	android:progress="75" />
+        	    android:id="@+id/progressBar1"
+        	    style="?android:attr/progressBarStyleHorizontal"
+        	    android:layout_width="0dp"
+        	    android:layout_height="50dp"
+        	    android:layout_weight="1"
+        	    android:background="#F0F0F0"
+        	    android:progress="0" />
 	
 	    </TableRow>
 	
@@ -78,6 +78,7 @@
 	            android:layout_marginRight="550dp"
 	            android:layout_weight=".25"
 	            android:background="#F0F0F0"
+	            android:onClick="onP1B1Click"
 	            android:text="@string/p1b1"
 	            android:textColorLink="#B8A099"
 	            android:textSize="40sp" />
@@ -87,8 +88,9 @@
 	            android:layout_width="0dp"
 	            android:layout_height="145dp"
 	            android:layout_weight=".25"
-	            android:text="@string/p1b2"
 	            android:background="#F0F0F0"
+	            android:onClick="onP2B1Click"
+	            android:text="@string/p1b2"
 	            android:textSize="40sp" />
 	                
 	    </TableRow>
@@ -104,8 +106,9 @@
 	            android:layout_height="145dp"
 	            android:layout_marginRight="550dp"
 	            android:layout_weight=".25"
-	            android:text="@string/p2b1"
 	            android:background="#F0F0F0"
+	            android:onClick="onP1B2Click"
+	            android:text="@string/p2b1"
 	            android:textSize="40sp" />
 	
 	        <Button
@@ -113,9 +116,11 @@
 	            android:layout_width="0dp"
 	            android:layout_height="145dp"
 	            android:layout_weight=".25"
-	            android:text="@string/p2b2"
 	            android:background="#F0F0F0"
+	            android:onClick="onP2B2Click"
+	            android:text="@string/p2b2"
 	            android:textSize="40sp" />
+
 	    </TableRow>
 	
 	</TableLayout>
