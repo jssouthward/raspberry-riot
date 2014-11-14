@@ -7,8 +7,8 @@
     <string name="p1Name"></string>
     <string name="p2Name"></string>
     <string name="p1b1">RED</string>
-    <string name="p2b1">GREEN</string>
-    <string name="p1b2">BLUE</string>
+    <string name="p2b1">BLUE</string>
+    <string name="p1b2">GREEN</string>
     <string name="p2b2">WHITE</string>
     <string name="title_activity_play">PlayActivity</string>
     <string name="hello_world">Hello world!</string>

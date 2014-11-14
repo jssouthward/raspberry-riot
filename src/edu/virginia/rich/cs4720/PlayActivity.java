@@ -28,6 +28,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Button;
 
 public class PlayActivity extends Activity implements SensorEventListener {
 
@@ -80,12 +81,30 @@ public class PlayActivity extends Activity implements SensorEventListener {
 		if (lux > .5) {
 			findViewById(R.id.game_parent_layout).setBackgroundColor(
 					Color.argb(255, 150, 150, 150));
+			
+			findViewById(R.id.p1plus1).setBackgroundColor(0xfff0f0f0);
+			findViewById(R.id.p1plus2).setBackgroundColor(0xfff0f0f0);
+			findViewById(R.id.p2plus1).setBackgroundColor(0xfff0f0f0);
+			findViewById(R.id.p2plus2).setBackgroundColor(0xfff0f0f0);
+			
+			((Button) findViewById(R.id.p1plus1)).setTextColor(0xff000000);
+			((Button) findViewById(R.id.p1plus2)).setTextColor(0xff000000);
+			((Button) findViewById(R.id.p2plus1)).setTextColor(0xff000000);
+			((Button) findViewById(R.id.p2plus2)).setTextColor(0xff000000);
 		}
 
 		// nighttime
 		if (lux < .5) {
-			findViewById(R.id.game_parent_layout).setBackgroundColor(
-					Color.argb(255, 78, 78, 78));
+			findViewById(R.id.game_parent_layout).setBackgroundColor(0xff0f0f0f);
+			findViewById(R.id.p1plus1).setBackgroundColor(0xff696969);
+			findViewById(R.id.p1plus2).setBackgroundColor(0xff696969);
+			findViewById(R.id.p2plus1).setBackgroundColor(0xff696969);
+			findViewById(R.id.p2plus2).setBackgroundColor(0xff696969);
+			
+			((Button) findViewById(R.id.p1plus1)).setTextColor(0xfff0f0f0);
+			((Button) findViewById(R.id.p1plus2)).setTextColor(0xfff0f0f0);
+			((Button) findViewById(R.id.p2plus1)).setTextColor(0xfff0f0f0);
+			((Button) findViewById(R.id.p2plus2)).setTextColor(0xfff0f0f0);
 		}
 	}
 	

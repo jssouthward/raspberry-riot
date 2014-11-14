@@ -35,9 +35,9 @@ public final class R {
         public static final int linearLayout1=0x7f080000;
         public static final int p1Indicator=0x7f080011;
         public static final int p1plus1=0x7f08000c;
-        public static final int p1plus2=0x7f08000d;
+        public static final int p1plus2=0x7f08000f;
         public static final int p2Indicator=0x7f080012;
-        public static final int p2plus1=0x7f08000f;
+        public static final int p2plus1=0x7f08000d;
         public static final int p2plus2=0x7f080010;
         public static final int progressBar1=0x7f080008;
         public static final int tableRow1=0x7f080007;
