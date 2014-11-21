@@ -37,6 +37,7 @@ public class PlayActivity extends Activity implements SensorEventListener {
 	private Sensor light;
 	private GameState state;
 	String IP;
+	JSONObject json;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,9 @@ public class PlayActivity extends Activity implements SensorEventListener {
         IP = this.getIntent().getStringExtra("IP").trim();
         
         state = new GameState(2, 32);
+        json = new JSONObject();
+        json = this.initLightJSON(1, 255, 0, 0, 1, true, json);
+        this.sendJson("http://" + IP + "/rpi", json);
 	}
 
 	@Override
@@ -112,44 +116,56 @@ public class PlayActivity extends Activity implements SensorEventListener {
 		}
 	}
 	
-	public void onP1B1Click(View view) {
-		JSONObject json = new JSONObject();
-		json = this.createLightJSON(1, 255, 0, 0, 1, true, json);
+	public void onP1B1Click(View view) throws JSONException {
+		state.proceed(1);
+		this.updateLightJSON(32 - state.getStateNodeID(), 
+									0, 0, 0, 1, json);
 		this.sendJson("http://" + IP + "/rpi", json);
+		
 		View p1p1 = findViewById(R.id.p1plus1);
 		p1p1.setBackgroundColor(0xff000000 + (0x7fffffff - ((ColorDrawable) p1p1.getBackground()).getColor()));
 		((ProgressBar) this.findViewById(R.id.progressBar1)).setProgress(
-				(int)(((ProgressBar) (findViewById(R.id.progressBar1))).getProgress()+3.125+0.5));
+			(int)(100.0 - state.getStatePercent()));
+		
 	}
 
-	public void onP1B2Click(View view) {
-		JSONObject json = new JSONObject();
-		json = this.createLightJSON(1, 0, 255, 0, 1, true, json);
-		this.sendJson("http://" + IP + "/rpi", json);
+	public void onP1B2Click(View view) throws JSONException {
+		state.proceed(2);
+		this.updateLightJSON(32 - state.getStateNodeID(), 
+				0, 0, 0, 1, json);
+		this.sendJson("http://" + IP + "/rpi", json);	
+		
 		View p1p2 = findViewById(R.id.p1plus2);
 		p1p2.setBackgroundColor(0xff000000 + (0x7fffffff - ((ColorDrawable) p1p2.getBackground()).getColor()));		
 		((ProgressBar) this.findViewById(R.id.progressBar1)).setProgress(
-				(int)(((ProgressBar) (findViewById(R.id.progressBar1))).getProgress()+(2*3.125)+0.5));		
+			(int)(100.0 - state.getStatePercent()));
+		
 	}
 	
-	public void onP2B1Click(View view) {
-		JSONObject json = new JSONObject();
-		json = this.createLightJSON(1, 0, 0, 255, 1, true, json);
+	public void onP2B1Click(View view) throws JSONException {
+		state.proceed(1);
+		this.updateLightJSON(32 - state.getStateNodeID(), 
+				0, 0, 0, 1, json);
 		this.sendJson("http://" + IP + "/rpi", json);
+		
 		View p2p1 = findViewById(R.id.p2plus1);
 		p2p1.setBackgroundColor(0xff000000 + (0x7fffffff - ((ColorDrawable) p2p1.getBackground()).getColor()));		
 		((ProgressBar) this.findViewById(R.id.progressBar1)).setProgress(
-				(int)(((ProgressBar) (findViewById(R.id.progressBar1))).getProgress()+3.125+0.5));		
+			(int)(100.0 - state.getStatePercent()));
+		
 	}
 	
-	public void onP2B2Click(View view) {
-		JSONObject json = new JSONObject();
-		json = this.createLightJSON(1, 255, 255, 255, 1, true, json);
+	public void onP2B2Click(View view) throws JSONException {
+		state.proceed(2);
+		this.updateLightJSON(32 - state.getStateNodeID(), 
+				0, 0, 0, 1, json);
 		this.sendJson("http://" + IP + "/rpi", json);
+		
 		View p2p2 = findViewById(R.id.p2plus2);
 		p2p2.setBackgroundColor(0xff000000 + (0x7fffffff - ((ColorDrawable) p2p2.getBackground()).getColor()));		
 		((ProgressBar) this.findViewById(R.id.progressBar1)).setProgress(
-				(int)(((ProgressBar) (findViewById(R.id.progressBar1))).getProgress()+(2*3.125)+0.5));
+			(int)(100.0 - state.getStatePercent()));
+		
 	}
 	
 	protected void sendJson(final String url, final JSONObject lightCommand) {
@@ -192,7 +208,7 @@ public class PlayActivity extends Activity implements SensorEventListener {
 		t.start();
 	}
 	
-	 public JSONObject createLightJSON(int lightId, int red, int green, int blue, double intensity, boolean propagate, JSONObject jObj) {;
+	 public JSONObject initLightJSON(int lightId, int red, int green, int blue, double intensity, boolean propagate, JSONObject jObj) {;
 		 try {
 		 JSONArray lightsArray = new JSONArray();
 		 JSONObject indvLight = new JSONObject();
@@ -210,6 +226,17 @@ public class PlayActivity extends Activity implements SensorEventListener {
 		 }
 		 
 		 return jObj;
+	 }
+	 
+	 public void updateLightJSON(int lightId, int red, int blue, int green, double intensity, JSONObject jObj) throws JSONException {
+//		 JSONArray lightsArray = (JSONArray) jObj.get("lights");
+		 JSONObject indvLight = new JSONObject();
+		 indvLight.put("lightId", lightId);
+		 indvLight.put("red", red);
+		 indvLight.put("blue", blue);
+		 indvLight.put("green", green);
+		 indvLight.put("intensity", intensity);
+		 ((JSONArray)jObj.get("lights")).put(1,indvLight);
 	 }
 	
 

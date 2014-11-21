@@ -34,7 +34,7 @@
         	    android:layout_weight="1"
         	    android:background="#F0F0F0"
         	    android:max="100"
-        	    android:progress="0" />
+        	    android:progress="100" />
 	
 	    </TableRow>
 	
