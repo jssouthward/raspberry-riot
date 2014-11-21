@@ -35,6 +35,7 @@ public class PlayActivity extends Activity implements SensorEventListener {
 
 	private SensorManager mSensorManager;
 	private Sensor light;
+	private GameState state;
 	String IP;
 
 	@Override
@@ -46,6 +47,8 @@ public class PlayActivity extends Activity implements SensorEventListener {
 		light = mSensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
 		
         IP = this.getIntent().getStringExtra("IP").trim();
+        
+        state = new GameState(2, 32);
 	}
 
 	@Override
@@ -79,7 +82,7 @@ public class PlayActivity extends Activity implements SensorEventListener {
 		// Do something with this sensor data.
 
 		// daytime
-		if (lux > .5) {
+		if (lux >= .3) {
 			findViewById(R.id.game_parent_layout).setBackgroundColor(
 					Color.argb(255, 150, 150, 150));
 			
@@ -95,7 +98,7 @@ public class PlayActivity extends Activity implements SensorEventListener {
 		}
 
 		// nighttime
-		if (lux < .5) {
+		if (lux < .3) {
 			findViewById(R.id.game_parent_layout).setBackgroundColor(0xff0f0f0f);
 			findViewById(R.id.p1plus1).setBackgroundColor(0xff696969);
 			findViewById(R.id.p1plus2).setBackgroundColor(0xff696969);
@@ -116,7 +119,7 @@ public class PlayActivity extends Activity implements SensorEventListener {
 		View p1p1 = findViewById(R.id.p1plus1);
 		p1p1.setBackgroundColor(0xff000000 + (0x7fffffff - ((ColorDrawable) p1p1.getBackground()).getColor()));
 		((ProgressBar) this.findViewById(R.id.progressBar1)).setProgress(
-				((ProgressBar) findViewById(R.id.progressBar1)).getProgress()+5);
+				(int)(((ProgressBar) (findViewById(R.id.progressBar1))).getProgress()+3.125+0.5));
 	}
 
 	public void onP1B2Click(View view) {
@@ -126,7 +129,7 @@ public class PlayActivity extends Activity implements SensorEventListener {
 		View p1p2 = findViewById(R.id.p1plus2);
 		p1p2.setBackgroundColor(0xff000000 + (0x7fffffff - ((ColorDrawable) p1p2.getBackground()).getColor()));		
 		((ProgressBar) this.findViewById(R.id.progressBar1)).setProgress(
-				((ProgressBar) findViewById(R.id.progressBar1)).getProgress()+5);		
+				(int)(((ProgressBar) (findViewById(R.id.progressBar1))).getProgress()+(2*3.125)+0.5));		
 	}
 	
 	public void onP2B1Click(View view) {
@@ -136,7 +139,7 @@ public class PlayActivity extends Activity implements SensorEventListener {
 		View p2p1 = findViewById(R.id.p2plus1);
 		p2p1.setBackgroundColor(0xff000000 + (0x7fffffff - ((ColorDrawable) p2p1.getBackground()).getColor()));		
 		((ProgressBar) this.findViewById(R.id.progressBar1)).setProgress(
-				((ProgressBar) findViewById(R.id.progressBar1)).getProgress()+5);		
+				(int)(((ProgressBar) (findViewById(R.id.progressBar1))).getProgress()+3.125+0.5));		
 	}
 	
 	public void onP2B2Click(View view) {
@@ -146,7 +149,7 @@ public class PlayActivity extends Activity implements SensorEventListener {
 		View p2p2 = findViewById(R.id.p2plus2);
 		p2p2.setBackgroundColor(0xff000000 + (0x7fffffff - ((ColorDrawable) p2p2.getBackground()).getColor()));		
 		((ProgressBar) this.findViewById(R.id.progressBar1)).setProgress(
-				((ProgressBar) findViewById(R.id.progressBar1)).getProgress()+5);
+				(int)(((ProgressBar) (findViewById(R.id.progressBar1))).getProgress()+(2*3.125)+0.5));
 	}
 	
 	protected void sendJson(final String url, final JSONObject lightCommand) {
