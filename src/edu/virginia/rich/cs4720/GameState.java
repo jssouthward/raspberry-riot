@@ -3,6 +3,7 @@ package edu.virginia.rich.cs4720;
 public class GameState {
 	private int progress;
 	private int playerTurn;
+	private int winner;
 	private final int PLAYERS;
 	private boolean playing;
 	private final int MAX_STATE;
@@ -18,8 +19,10 @@ public class GameState {
 	public void proceed(int amount) {
 		progress += amount;
 		
-		if (progress >= MAX_STATE)
+		if (progress >= MAX_STATE) {
 			playing = false;
+			winner = playerTurn;
+		}
 		
 		if (playerTurn < PLAYERS)
 			playerTurn++;
@@ -33,6 +36,10 @@ public class GameState {
 	
 	public double getStatePercent() {
 		return ((double)(progress)/(double)(MAX_STATE))*100;
+	}
+	
+	public int getWinner() {
+		return winner;
 	}
 	
 	public boolean isGameActive() {

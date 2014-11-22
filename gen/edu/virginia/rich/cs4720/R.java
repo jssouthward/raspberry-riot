@@ -39,14 +39,14 @@ public final class R {
         public static final int p2Indicator=0x7f080012;
         public static final int p2plus1=0x7f08000d;
         public static final int p2plus2=0x7f080010;
+        public static final int player1Name=0x7f08000a;
+        public static final int player2Name=0x7f080005;
         public static final int progressBar1=0x7f080008;
         public static final int tableRow1=0x7f080007;
         public static final int tableRow2=0x7f08000b;
         public static final int tableRow3=0x7f08000e;
         public static final int tableRow4=0x7f080009;
         public static final int textView=0x7f080003;
-        public static final int textView1=0x7f08000a;
-        public static final int textView2=0x7f080005;
     }
     public static final class layout {
         public static final int activity_game_panel=0x7f030000;

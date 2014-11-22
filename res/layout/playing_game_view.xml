@@ -45,23 +45,23 @@
         	android:paddingBottom="5dp" >
 	
         	<TextView
-	            android:id="@+id/textView1"
-            	android:layout_width="0dp"
-            	android:layout_weight=".25"
-            	android:layout_height="wrap_content"
-            	android:text="@string/p1Name"
-            	android:gravity="center"
-            	android:layout_marginRight="550dp"
-            	android:textSize="40sp" />
+        	    android:id="@+id/player1Name"
+        	    android:layout_width="0dp"
+        	    android:layout_height="wrap_content"
+        	    android:layout_marginRight="550dp"
+        	    android:layout_weight=".25"
+        	    android:gravity="center"
+        	    android:text="@string/p1Name"
+        	    android:textSize="40sp" />
 	
         	<TextView
-	            android:id="@+id/textView2"
-	            android:layout_width="0dp"
-	            android:layout_weight=".25"
-	            android:layout_height="wrap_content"
-	            android:text="@string/p2Name"
-	            android:gravity="center"
-	            android:textSize="40sp" />
+        	    android:id="@+id/player2Name"
+        	    android:layout_width="0dp"
+        	    android:layout_height="wrap_content"
+        	    android:layout_weight=".25"
+        	    android:gravity="center"
+        	    android:text="@string/p2Name"
+        	    android:textSize="40sp" />
 	
 	    </TableRow>
 	    

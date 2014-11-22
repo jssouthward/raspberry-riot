@@ -23,7 +23,9 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Looper;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -83,7 +85,6 @@ public class PlayActivity extends Activity implements SensorEventListener {
 	@Override
 	public final void onSensorChanged(SensorEvent event) {
 		float lux = event.values[0];
-		// Do something with this sensor data.
 
 		// daytime
 		if (lux >= .3) {
@@ -127,6 +128,7 @@ public class PlayActivity extends Activity implements SensorEventListener {
 		((ProgressBar) this.findViewById(R.id.progressBar1)).setProgress(
 			(int)(100.0 - state.getStatePercent()));
 		
+		this.endCheck();
 	}
 
 	public void onP1B2Click(View view) throws JSONException {
@@ -139,7 +141,8 @@ public class PlayActivity extends Activity implements SensorEventListener {
 		p1p2.setBackgroundColor(0xff000000 + (0x7fffffff - ((ColorDrawable) p1p2.getBackground()).getColor()));		
 		((ProgressBar) this.findViewById(R.id.progressBar1)).setProgress(
 			(int)(100.0 - state.getStatePercent()));
-		
+
+		this.endCheck();
 	}
 	
 	public void onP2B1Click(View view) throws JSONException {
@@ -153,6 +156,7 @@ public class PlayActivity extends Activity implements SensorEventListener {
 		((ProgressBar) this.findViewById(R.id.progressBar1)).setProgress(
 			(int)(100.0 - state.getStatePercent()));
 		
+		this.endCheck();
 	}
 	
 	public void onP2B2Click(View view) throws JSONException {
@@ -166,6 +170,7 @@ public class PlayActivity extends Activity implements SensorEventListener {
 		((ProgressBar) this.findViewById(R.id.progressBar1)).setProgress(
 			(int)(100.0 - state.getStatePercent()));
 		
+		this.endCheck();
 	}
 	
 	protected void sendJson(final String url, final JSONObject lightCommand) {
@@ -189,12 +194,8 @@ public class PlayActivity extends Activity implements SensorEventListener {
 
 					/* Checking response */
 					if (response != null) {
-						InputStream in = response.getEntity().getContent(); // Get
-																			// the
-																			// data
-																			// in
-																			// the
-																			// entity
+						InputStream in = response.getEntity().getContent(); // Get the data
+																			// in the entity
 					}
 
 				} catch (Exception e) {
@@ -229,7 +230,6 @@ public class PlayActivity extends Activity implements SensorEventListener {
 	 }
 	 
 	 public void updateLightJSON(int lightId, int red, int blue, int green, double intensity, JSONObject jObj) throws JSONException {
-//		 JSONArray lightsArray = (JSONArray) jObj.get("lights");
 		 JSONObject indvLight = new JSONObject();
 		 indvLight.put("lightId", lightId);
 		 indvLight.put("red", red);
@@ -239,5 +239,28 @@ public class PlayActivity extends Activity implements SensorEventListener {
 		 ((JSONArray)jObj.get("lights")).put(1,indvLight);
 	 }
 	
-
+	 public void endCheck() {
+		 if(!state.isGameActive()) {
+			 DialogInterface.OnClickListener dialogListener = new DialogInterface.OnClickListener() {
+				 @Override
+				 public void onClick(DialogInterface dialog, int btn_press) {
+					 switch (btn_press) {
+					 	case DialogInterface.BUTTON_POSITIVE:
+					 		//DO THE TWITTER STUFF
+					 		break;
+					 	case DialogInterface.BUTTON_NEGATIVE:
+					 		finish();
+					 		break;
+					 }
+				 }
+				 
+			 };
+			 AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			 builder.setMessage("MESSAGE HERE! ETC ETC ETC POST TO TWITTER?")
+					.setPositiveButton("Yes!", dialogListener)
+					.setNegativeButton("Nope!", dialogListener)
+					.show();
+			 
+		 }
+	 }
 }
