@@ -16,6 +16,17 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Raspberry Riot"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="120sp"
+            android:typeface="monospace"
+            android:paddingBottom="30dp" />
+
         <GridLayout
             android:id="@+id/IPfield"
             android:layout_width="wrap_content"
