@@ -28,6 +28,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import twitter4j.TwitterException;
+
 import java.io.InputStream;
 
 
@@ -37,7 +39,6 @@ public class GamePanel extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_panel);
-        
     }
 
     @Override

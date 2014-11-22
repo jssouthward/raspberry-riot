@@ -15,6 +15,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import twitter4j.TwitterException;
+
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.hardware.Sensor;
@@ -261,7 +263,18 @@ public class PlayActivity extends Activity implements SensorEventListener {
 				 public void onClick(DialogInterface dialog, int btn_press) {
 					 switch (btn_press) {
 					 	case DialogInterface.BUTTON_POSITIVE:
-					 		//DO THE TWITTER STUFF
+					    	Thread thread = new Thread() {
+					    		public void run() {
+					    			try {
+					    				TwitterCall t = new TwitterCall(names.get(state.currentTurn()));
+					    			} catch (TwitterException e) {
+					    				// TODO Auto-generated catch block
+					    				Log.wtf("WHOOPS", Log.getStackTraceString(e).toString());
+					    			}
+					    		}
+					    	};
+					    	thread.start();
+					    	finish();
 					 		break;
 					 	case DialogInterface.BUTTON_NEGATIVE:
 					 		finish();
