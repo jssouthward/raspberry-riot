@@ -35,6 +35,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class PlayActivity extends Activity implements SensorEventListener {
 
@@ -274,9 +275,16 @@ public class PlayActivity extends Activity implements SensorEventListener {
 					    		}
 					    	};
 					    	thread.start();
+
+		    				Toast.makeText(PlayActivity.this,
+		    						"View your tweet and other recent victories at www.twitter.com/raspberry_riot",
+		    						Toast.LENGTH_LONG).show();
 					    	finish();
 					 		break;
 					 	case DialogInterface.BUTTON_NEGATIVE:
+		    				Toast.makeText(PlayActivity.this,
+		    						"View recent victories at www.twitter.com/raspberry_riot",
+		    						Toast.LENGTH_LONG).show();
 					 		finish();
 					 		break;
 					 }
@@ -284,7 +292,7 @@ public class PlayActivity extends Activity implements SensorEventListener {
 				 
 			 };
 			 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			 builder.setMessage(names.get(state.currentTurn()) + " WINS! ETC ETC ETC POST TO TWITTER?")
+			 builder.setMessage(names.get(state.currentTurn()) + " wins! Tweet your victory? (@Raspberry_Riot)")
 					.setPositiveButton("Yes!", dialogListener)
 					.setNegativeButton("Nope!", dialogListener)
 					.show();
