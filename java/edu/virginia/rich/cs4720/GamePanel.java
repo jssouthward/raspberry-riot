@@ -65,6 +65,8 @@ public class GamePanel extends Activity {
     public void onStartButtonClicked(View view) {
     	Intent intent = new Intent(this, PlayActivity.class);
     	intent.putExtra("IP", ((EditText)findViewById(R.id.editText)).getText().toString());
+    	intent.putExtra("player1Name", ((EditText)findViewById(R.id.player1Name)).getText().toString());
+    	intent.putExtra("player2Name", ((EditText)findViewById(R.id.player2Name)).getText().toString());    	
     	this.startActivity(intent);
     }
 

@@ -1,6 +1,7 @@
 package edu.virginia.rich.cs4720;
 
 import java.io.InputStream;
+import java.util.HashMap;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -39,17 +40,25 @@ public class PlayActivity extends Activity implements SensorEventListener {
 	private Sensor light;
 	private GameState state;
 	String IP;
+	HashMap<Integer, String> names;
 	JSONObject json;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.playing_game_view);
+		
+		names = new HashMap<Integer, String>();
+		names.put(1, this.getIntent().getStringExtra("player1Name").trim());
+		names.put(2, this.getIntent().getStringExtra("player2Name").trim());
+		
+        ((TextView) findViewById(R.id.player1Name)).setText(names.get(1));
+        ((TextView) findViewById(R.id.player2Name)).setText(names.get(2));
 
 		mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 		light = mSensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
 		
-        IP = this.getIntent().getStringExtra("IP").trim();
+        IP = this.getIntent().getStringExtra("IP").trim();        
         
         state = new GameState(2, 32);
         json = new JSONObject();
@@ -100,6 +109,9 @@ public class PlayActivity extends Activity implements SensorEventListener {
 			((Button) findViewById(R.id.p1plus2)).setTextColor(0xff000000);
 			((Button) findViewById(R.id.p2plus1)).setTextColor(0xff000000);
 			((Button) findViewById(R.id.p2plus2)).setTextColor(0xff000000);
+			
+			((TextView) findViewById(R.id.player1Name)).setTextColor(0xff000000);
+			((TextView) findViewById(R.id.player2Name)).setTextColor(0xff000000);
 		}
 
 		// nighttime
@@ -114,6 +126,9 @@ public class PlayActivity extends Activity implements SensorEventListener {
 			((Button) findViewById(R.id.p1plus2)).setTextColor(0xfff0f0f0);
 			((Button) findViewById(R.id.p2plus1)).setTextColor(0xfff0f0f0);
 			((Button) findViewById(R.id.p2plus2)).setTextColor(0xfff0f0f0);
+			
+			((TextView) findViewById(R.id.player1Name)).setTextColor(0xfff0f0f0);
+			((TextView) findViewById(R.id.player2Name)).setTextColor(0xfff0f0f0);
 		}
 	}
 	
@@ -256,7 +271,7 @@ public class PlayActivity extends Activity implements SensorEventListener {
 				 
 			 };
 			 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			 builder.setMessage("MESSAGE HERE! ETC ETC ETC POST TO TWITTER?")
+			 builder.setMessage(names.get(state.currentTurn()) + " WINS! ETC ETC ETC POST TO TWITTER?")
 					.setPositiveButton("Yes!", dialogListener)
 					.setNegativeButton("Nope!", dialogListener)
 					.show();

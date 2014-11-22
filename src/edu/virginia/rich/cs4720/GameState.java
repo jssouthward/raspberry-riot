@@ -19,15 +19,15 @@ public class GameState {
 	public void proceed(int amount) {
 		progress += amount;
 		
-		if (progress >= MAX_STATE) {
-			playing = false;
-			winner = playerTurn;
-		}
-		
 		if (playerTurn < PLAYERS)
 			playerTurn++;
 		else
 			playerTurn = 1;
+		
+		if (progress >= MAX_STATE) {
+			playing = false;
+			winner = playerTurn;
+		}
 	}
 	
 	public int getStateNodeID() {
@@ -44,6 +44,10 @@ public class GameState {
 	
 	public boolean isGameActive() {
 		return playing;
+	}
+	
+	public int currentTurn() {
+		return playerTurn;
 	}
 
 }
