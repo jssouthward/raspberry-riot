@@ -45,6 +45,8 @@ public class PlayActivity extends Activity implements SensorEventListener {
 	String IP;
 	HashMap<Integer, String> names;
 	JSONObject json;
+	boolean brightLight;
+	boolean btnPressed;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +69,11 @@ public class PlayActivity extends Activity implements SensorEventListener {
         json = new JSONObject();
         json = this.initLightJSON(1, 255, 0, 0, 1, true, json);
         this.sendJson("http://" + IP + "/rpi", json);
+        
+        brightLight = true;
+        
+		((Button) findViewById(R.id.p2plus1)).setAlpha(0);
+		((Button) findViewById(R.id.p2plus2)).setAlpha(0);
 	}
 
 	@Override
@@ -99,7 +106,7 @@ public class PlayActivity extends Activity implements SensorEventListener {
 		float lux = event.values[0];
 
 		// daytime
-		if (lux >= .3) {
+		if (lux >= .3 && !brightLight) {
 			findViewById(R.id.game_parent_layout).setBackgroundColor(
 					Color.argb(255, 150, 150, 150));
 			
@@ -115,10 +122,11 @@ public class PlayActivity extends Activity implements SensorEventListener {
 			
 			((TextView) findViewById(R.id.player1Name)).setTextColor(0xff000000);
 			((TextView) findViewById(R.id.player2Name)).setTextColor(0xff000000);
+			brightLight = true;
 		}
 
 		// nighttime
-		if (lux < .3) {
+		if (lux < .3 && brightLight) {
 			findViewById(R.id.game_parent_layout).setBackgroundColor(0xff0f0f0f);
 			findViewById(R.id.p1plus1).setBackgroundColor(0xff696969);
 			findViewById(R.id.p1plus2).setBackgroundColor(0xff696969);
@@ -132,63 +140,93 @@ public class PlayActivity extends Activity implements SensorEventListener {
 			
 			((TextView) findViewById(R.id.player1Name)).setTextColor(0xfff0f0f0);
 			((TextView) findViewById(R.id.player2Name)).setTextColor(0xfff0f0f0);
+			brightLight = false;
 		}
 	}
 	
+	public void turnChange(int turn) {
+		if (turn == 2) {
+			((Button) findViewById(R.id.p1plus1)).setAlpha(255);						
+			((Button) findViewById(R.id.p1plus2)).setAlpha(255);
+			((Button) findViewById(R.id.p2plus1)).setAlpha(0);
+			((Button) findViewById(R.id.p2plus2)).setAlpha(0);			
+		}
+		
+		if (turn == 1) {
+			((Button) findViewById(R.id.p1plus1)).setAlpha(0);						
+			((Button) findViewById(R.id.p1plus2)).setAlpha(0);			
+			((Button) findViewById(R.id.p2plus1)).setAlpha(255);			
+			((Button) findViewById(R.id.p2plus2)).setAlpha(255);
+		}
+		
+	}
+	
 	public void onP1B1Click(View view) throws JSONException {
-		state.proceed(1);
-		this.updateLightJSON(32 - state.getStateNodeID(), 
-									0, 0, 0, 1, json);
-		this.sendJson("http://" + IP + "/rpi", json);
+		if(state.currentTurn() == 1) {
+			this.turnChange(1);
+			state.proceed(1);
+			this.updateLightJSON(32 - state.getStateNodeID(), 
+					0, 0, 0, 1, json);
+			this.sendJson("http://" + IP + "/rpi", json);
+			
+			//View p1p1 = findViewById(R.id.p1plus1);
+			//p1p1.setBackgroundColor(0xff000000 + (0x7fffffff - ((ColorDrawable) p1p1.getBackground()).getColor()));
+			((ProgressBar) this.findViewById(R.id.progressBar1)).setProgress(
+					(int)(100.0 - state.getStatePercent()));
 		
-		View p1p1 = findViewById(R.id.p1plus1);
-		p1p1.setBackgroundColor(0xff000000 + (0x7fffffff - ((ColorDrawable) p1p1.getBackground()).getColor()));
-		((ProgressBar) this.findViewById(R.id.progressBar1)).setProgress(
-			(int)(100.0 - state.getStatePercent()));
-		
-		this.endCheck();
+			this.endCheck();
+		}
 	}
 
 	public void onP1B2Click(View view) throws JSONException {
-		state.proceed(2);
-		this.updateLightJSON(32 - state.getStateNodeID(), 
-				0, 0, 0, 1, json);
-		this.sendJson("http://" + IP + "/rpi", json);	
-		
-		View p1p2 = findViewById(R.id.p1plus2);
-		p1p2.setBackgroundColor(0xff000000 + (0x7fffffff - ((ColorDrawable) p1p2.getBackground()).getColor()));		
-		((ProgressBar) this.findViewById(R.id.progressBar1)).setProgress(
-			(int)(100.0 - state.getStatePercent()));
-
-		this.endCheck();
+		if(state.currentTurn() == 1) {
+			this.turnChange(1);
+			state.proceed(2);
+			this.updateLightJSON(32 - state.getStateNodeID(), 
+					0, 0, 0, 1, json);
+			this.sendJson("http://" + IP + "/rpi", json);	
+			
+			//View p1p2 = findViewById(R.id.p1plus2);
+			//p1p2.setBackgroundColor(0xff000000 + (0x7fffffff - ((ColorDrawable) p1p2.getBackground()).getColor()));		
+			((ProgressBar) this.findViewById(R.id.progressBar1)).setProgress(
+					(int)(100.0 - state.getStatePercent()));
+			
+			this.endCheck();
+		}
 	}
 	
 	public void onP2B1Click(View view) throws JSONException {
-		state.proceed(1);
-		this.updateLightJSON(32 - state.getStateNodeID(), 
-				0, 0, 0, 1, json);
-		this.sendJson("http://" + IP + "/rpi", json);
-		
-		View p2p1 = findViewById(R.id.p2plus1);
-		p2p1.setBackgroundColor(0xff000000 + (0x7fffffff - ((ColorDrawable) p2p1.getBackground()).getColor()));		
-		((ProgressBar) this.findViewById(R.id.progressBar1)).setProgress(
-			(int)(100.0 - state.getStatePercent()));
-		
-		this.endCheck();
+		if(state.currentTurn() == 2) {
+			this.turnChange(2);
+			state.proceed(1);
+			this.updateLightJSON(32 - state.getStateNodeID(), 
+					0, 0, 0, 1, json);
+			this.sendJson("http://" + IP + "/rpi", json);
+			
+			//View p2p1 = findViewById(R.id.p2plus1);
+//			p2p1.setBackgroundColor(0xff000000 + (0x7fffffff - ((ColorDrawable) p2p1.getBackground()).getColor()));		
+			((ProgressBar) this.findViewById(R.id.progressBar1)).setProgress(
+					(int)(100.0 - state.getStatePercent()));
+			
+			this.endCheck();
+		}
 	}
 	
 	public void onP2B2Click(View view) throws JSONException {
-		state.proceed(2);
-		this.updateLightJSON(32 - state.getStateNodeID(), 
-				0, 0, 0, 1, json);
-		this.sendJson("http://" + IP + "/rpi", json);
-		
-		View p2p2 = findViewById(R.id.p2plus2);
-		p2p2.setBackgroundColor(0xff000000 + (0x7fffffff - ((ColorDrawable) p2p2.getBackground()).getColor()));		
-		((ProgressBar) this.findViewById(R.id.progressBar1)).setProgress(
-			(int)(100.0 - state.getStatePercent()));
-		
-		this.endCheck();
+		if(state.currentTurn() == 2) {
+			this.turnChange(2);
+			state.proceed(2);
+			this.updateLightJSON(32 - state.getStateNodeID(), 
+					0, 0, 0, 1, json);
+			this.sendJson("http://" + IP + "/rpi", json);
+			
+			//View p2p2 = findViewById(R.id.p2plus2);
+			//p2p2.setBackgroundColor(0xff000000 + (0x7fffffff - ((ColorDrawable) p2p2.getBackground()).getColor()));		
+			((ProgressBar) this.findViewById(R.id.progressBar1)).setProgress(
+					(int)(100.0 - state.getStatePercent()));
+			
+			this.endCheck();
+		}
 	}
 	
 	protected void sendJson(final String url, final JSONObject lightCommand) {
